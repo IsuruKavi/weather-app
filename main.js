@@ -3,14 +3,16 @@ async function checkWeather() {
     const apiKey = "11d3b9c07990652357958ea2d3771926";
     const city = document.querySelector("input").value;
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
-    
+
     const response = await fetch(apiUrl);
     const data = await response.json();
    
-    document.querySelector(".error").style.display = data.cod==="404" ? "block":"none";  // display error msg when incorrect user input
-    document.querySelector(".weather").style.display = data.cod==="404" ? "none":"block";//display weather details when corect user input
 
-// Display weather details
+try {
+    document.querySelector(".weather").style.display="block";
+    document.querySelector(".error").style.display="none";
+
+    // Display weather details
     document.querySelector(".temperature").innerHTML = Math.round(data.main.temp-273.15)+ "°C";
     document.querySelector(".city").innerHTML = data.name;
     document.querySelector(".precentage").innerHTML = data.main.humidity+"%";
@@ -43,4 +45,11 @@ async function checkWeather() {
             break;   
         
     }
+} catch (error) {
+    console.log(error);
+    document.querySelector(".error").style.display="block";
+    document.querySelector(".weather").style.display="none";
+}
+
+    
 }
